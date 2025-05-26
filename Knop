@@ -1,0 +1,50 @@
+добавить 
+
+if (click == 0)
+
+{
+
+    дисциплиныBindingSource.AddNew();
+
+    click += 1;
+
+}
+
+else
+
+{
+
+    дисциплиныBindingSource.EndEdit();
+
+    дисциплиныTableAdapter.Update(_Дневник_руDataSet);
+
+    click = 0;
+
+
+
+}
+
+удалить 
+
+
+
+if (дисциплиныBindingSource.Current != null)
+
+{
+
+    дисциплиныBindingSource.RemoveCurrent();
+
+    дисциплиныBindingSource.EndEdit();
+
+    дисциплиныTableAdapter.Update(_Дневник_руDataSet);
+
+}
+
+else
+
+{
+
+    MessageBox.Show("Нет выбранной строки для удаления.");
+
+}
+
