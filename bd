@@ -1,0 +1,149 @@
+-- Удаление базы данных, если она существует
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'LibraryDB')
+BEGIN
+    DROP DATABASE LibraryDB;
+END
+GO
+
+-- Создание базы данных
+CREATE DATABASE LibraryDB;
+GO
+
+-- Используем созданную базу данных
+USE LibraryDB;
+GO
+
+-- Создание таблицы Категории
+CREATE TABLE Категории (
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    Название NVARCHAR(50) NOT NULL
+);
+GO
+
+-- Вставка данных в таблицу Категории
+INSERT INTO Категории (Название) VALUES
+('Художественная литература'),
+('Научная литература'),
+('Фантастика'),
+('Фэнтези'),
+('Детективы'),
+('Романтика'),
+('Ужасы'),
+('Биографии'),
+('История'),
+('Детская литература'),
+('Поэзия'),
+('Саморазвитие'),
+('Кулинария');
+GO
+
+-- Создание таблицы Авторы
+CREATE TABLE Авторы (
+    AuthorID INT PRIMARY KEY IDENTITY(1,1),
+    Имя NVARCHAR(50) NOT NULL,
+    Фамилия NVARCHAR(50) NOT NULL,
+    ДатаРождения DATE,
+    Национальность NVARCHAR(50)
+);
+GO
+
+-- Вставка данных в таблицу Авторы
+INSERT INTO Авторы (Имя, Фамилия, ДатаРождения, Национальность) VALUES
+('Лев', 'Толстой', '1828-09-09', 'Русский'),
+('Анна', 'Ахматова', '1889-02-23', 'Русская'),
+('Федор', 'Достоевский', '1821-11-11', 'Русский'),
+('Александр', 'Пушкин', '1799-06-06', 'Русский'),
+('Михаил', 'Булгаков', '1891-05-15', 'Русский'),
+('Габриэль', 'Гарсиа Маркес', '1927-03-06', 'Колумбиец'),
+('Джордж', 'Оруэлл', '1903-06-25', 'Британец'),
+('Джейн', 'Остин', '1775-12-16', 'Британка'),
+('Стивен', 'Кинг', '1947-09-21', 'Американец'),
+('Эрнест', 'Хемингуэй', '1899-07-21', 'Американец'),
+('Исаак', 'Азимов', '1920-01-02', 'Русско-американец'),
+('Герман', 'Гессе', '1877-07-02', 'Немец'),
+('Коэльо', 'Пауло', '1947-08-24', 'Бразилец');
+GO
+
+-- Создание таблицы Книги
+CREATE TABLE Книги (
+    BookID INT PRIMARY KEY IDENTITY(1,1),
+    Название NVARCHAR(100) NOT NULL,
+    AuthorID INT FOREIGN KEY REFERENCES Авторы(AuthorID),
+    CategoryID INT FOREIGN KEY REFERENCES Категории(CategoryID),
+    ГодИздания INT,
+    ISBN NVARCHAR(20),
+    КоличествоКопий INT
+);
+GO
+
+-- Вставка данных в таблицу Книги
+INSERT INTO Книги (Название, AuthorID, CategoryID, ГодИздания, ISBN, КоличествоКопий) VALUES
+('Война и мир', 1, 1, 1869, '978-3-16-148410-0', 5),
+('Руслан и Людмила', 4, 1, 1820, '978-5-17-044657-4', 3),
+('Преступление и наказание', 3, 2, 1866, '978-0-14-305814-4', 4),
+('Мастер и Маргарита', 5, 3, 1967, '978-5-17-044657-4', 2),
+('451 градус по Фаренгейту', 6, 4, 1953, '978-0-7432-7356-5', 6),
+('Убить пересмешника', 8, 5, 1960, '978-0-06-112008-4', 4),
+('1984', 7, 6, 1949, '978-0-452-28423-4', 6),
+('Гарри Поттер и философский камень', 9, 7, 1997, '978-0-590-35340-3', 8),
+('Тень горы', 12, 8, 2005, '978-0-06-058470-9', 3),
+('Собачье сердце', 5, 2, 1925, '978-5-17-044657-4', 2),
+('Наука о счастье', 11, 9, 2019, '978-5-17-044657-4', 5),
+('Золотой теленок', 10, 10, 1931, '978-5-17-044657-4', 3),
+('Старик и море', 9, 11, 1952, '978-0-684-80122-3', 5);
+GO
+
+-- Создание таблицы Члены
+CREATE TABLE Члены (
+    MemberID INT PRIMARY KEY IDENTITY(1,1),
+    Имя NVARCHAR(50) NOT NULL,
+    Фамилия NVARCHAR(50) NOT NULL,
+    ДатаРождения DATE,
+    ДатаРегистрации DATE,
+    Email NVARCHAR(100)
+);
+GO
+
+-- Вставка данных в таблицу Члены
+INSERT INTO Члены (Имя, Фамилия, ДатаРождения, ДатаРегистрации, Email) VALUES
+('Алексей', 'Иванов', '1990-05-15', GETDATE(), 'alexey.ivanov@example.com'),
+('Мария', 'Петрова', '1985-03-22', GETDATE(), 'maria.petrova@example.com'),
+('Сергей', 'Сидоров', '1978-07-30', GETDATE(), 'sergey.sidorov@example.com'),
+('Елена', 'Кузнецова', '1992-11-10', GETDATE(), 'elena.kuznetsova@example.com'),
+('Анна', 'Смирнова', '1988-02-14', GETDATE(), 'anna.smirnova@example.com'),
+('Дмитрий', 'Федоров', '1980-08-05', GETDATE(), 'dmitry.fedorov@example.com'),
+('Ольга', 'Морозова', '1995-09-25', GETDATE(), 'olga.morozova@example.com'),
+('Павел', 'Васильев', '1975-12-01', GETDATE(), 'pavel.vasiliev@example.com'),
+('Ирина', 'Тихонова', '1993-04-18', GETDATE(), 'irina.tikhonova@example.com'),
+('Николай', 'Лебедев', '1982-06-30', GETDATE(), 'nikolay.lebedev@example.com'),
+('Ксения', 'Зайцева', '1991-10-12', GETDATE(), 'kseniya.zaytseva@example.com'),
+('Артемий', 'Соловьев', '1987-01-20', GETDATE(), 'artemiy.solovyev@example.com'),
+('Виктория', 'Никитина', '1994-03-08', GETDATE(), 'victoria.nikitina@example.com');
+GO
+
+-- Создание таблицы Выдачи
+CREATE TABLE Выдачи (
+    LoanID INT PRIMARY KEY IDENTITY(1,1),
+    MemberID INT FOREIGN KEY REFERENCES Члены(MemberID),
+    BookID INT FOREIGN KEY REFERENCES Книги(BookID),
+    ДатаВыдачи DATE,
+    ДатаВозврата DATE
+);
+GO
+
+-- Вставка данных в таблицу Выдачи
+INSERT INTO Выдачи (MemberID, BookID, ДатаВыдачи, ДатаВозврата) VALUES
+(1, 1, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(2, 2, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(3, 3, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(4, 4, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(5, 5, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(6, 6, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(7, 7, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(8, 8, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(9, 9, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(10, 10, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(11, 11, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(12, 12, GETDATE(), DATEADD(DAY, 14, GETDATE())),
+(13, 13, GETDATE(), DATEADD(DAY, 14, GETDATE()));
+GO
